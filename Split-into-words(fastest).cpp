@@ -1,14 +1,16 @@
 #include <string_view>
 
-vector<string_view> SplitIntoWordsView(const string& str) {
+
+vector<string_view> SplitIntoWordsView(string_view str) {
     vector<string_view> result;
-    auto pos = str.find_first_not_of(" ");
-    const auto pos_end = str.npos;
-  
-    while (pos != pos_end) {
-        auto space = str.find(' ', pos);
-        result.push_back(space == pos_end ? str.substr(pos) : str.substr(pos, space - pos));
-        pos = str.find_first_not_of(" ", space);
+    str.remove_prefix(std::min(str.find_first_not_of(" "), str.size()));
+    
+    while (!str.empty()) {
+        auto space = str.find(" ");
+        result.push_back(str.substr(0,space));
+        str.remove_prefix(std::min(str.find_first_of(" "),str.size()));
+        str.remove_prefix(std::min(str.find_first_not_of(" "),str.size()));
     }
+
     return result;
 }
